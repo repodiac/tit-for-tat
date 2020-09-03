@@ -5,12 +5,12 @@
 git clone https://github.com/repodiac/tit-for-tat thorsten-tts-training
 ```
 
-2. Change to the cloned folder
+2. Change to the cloned folder structure
 ```
-cd thorsten-tts-training
+cd thorsten-tts-training/thorsten-TTS/thorsten-v02-DDC/
 ```
 
-3. Make sure the config files `model_config.json` and `vocoder_config.json` are in the same folder as the Dockerfile
+3. Make sure the config files `model_config.json` and `vocoder_config.json` are in the same folder as the `Dockerfile`
 ```
 docker build --rm -t thorsten-tts-training .
 ```
