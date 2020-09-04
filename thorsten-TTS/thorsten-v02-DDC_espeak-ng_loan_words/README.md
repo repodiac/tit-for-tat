@@ -11,13 +11,13 @@ git clone https://github.com/repodiac/tit-for-tat thorsten-tts-training
 
 2. Change to the cloned folder structuref
 cd thorsten-tts-training/thorsten-TTS/thorsten-v02-DDC_espeak-ng_loan_words/
-```
+
 
 3. 
 
 * Make sure the config files `model_config.json` and `vocoder_config.json` are in the same folder as the `Dockerfile`
 * We also need the dictionary files `de_extra` and `de_rules` in the **same** folder (see here in my tutorial how to [create/download](https://github.com/repodiac/espeak-ng_german_loan_words))
-	* **Please note:** you should be sure, i.e. have checked before, that the dictionary can be imported into espeak-ng (see notes in the tutorial)! Otherwise the build of the Dockerfile might fail.
+	* Please note: you should be sure, i.e. have checked before, that the dictionary can be imported into espeak-ng (see notes in the tutorial)! Otherwise the build of the Dockerfile might fail.
 
 ```
 docker build --rm -t thorsten-tts-training-lw .
