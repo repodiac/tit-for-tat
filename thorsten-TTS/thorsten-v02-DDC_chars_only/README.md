@@ -1,4 +1,6 @@
-**IMPORTANT NOTE:** This is a specific version using **no phonemes**, so only graphemes or only characters in the training text is used!
+**IMPORTANT NOTE:**
+* This is a specific version using **no phonemes**, so only graphemes or only characters in the training text is used!
+* It also makes use of [Apex](https://github.com/NVIDIA/apex), an extension from NVIDIA for automatic mixed-precision training - significantly saving memory and (often) also speeding up calculations!
 
 # Installation (under Linux)
 
