@@ -43,11 +43,15 @@ FROM ttts2 as ttts3
 ARG BASEDIR
 WORKDIR $BASEDIR
 
-RUN git clone https://github.com/mozilla/TTS $BASEDIR/TTS
+# install NVIDIA Apex extension
+RUN git clone https://github.com/NVIDIA/apex
+RUN cd apex
+RUN pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" $BASEDIR/apex
 
-# checkout a specific version
+# checkout a most recent version and install
+WORKDIR $BASEDIR
+RUN git clone --single-branch --branch dev https://github.com/mozilla/TTS $BASEDIR/TTS
 WORKDIR $BASEDIR/TTS
-RUN git checkout 3424181
 RUN pip install -r requirements.txt
 RUN python setup.py develop
 
