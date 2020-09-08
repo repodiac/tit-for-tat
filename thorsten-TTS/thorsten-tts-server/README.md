@@ -22,4 +22,6 @@ docker build --rm -t thorsten-tts_server .
 docker run --rm -v $(pwd)/models:/tts/models -p 127.0.0.1:5002:5002 tts_server /tts/models/<here specific file path to model file, e.g. best_model.pth.tar or specific checkpoint>
 ```
 
+4. Open the URL `http://127.0.0.1:5002` in your browser (pointing to the local machine, here); Javascript is required
+
 **Note:** You can stop the container anytime via `docker stop $(docker container ls | grep 'thorsten-tts_server' | cut -f1 -d\t)`
