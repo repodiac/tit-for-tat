@@ -33,5 +33,13 @@ If you run it with **NVIDIA GPU(s)**, please install the nvidia-docker extension
 docker run --rm --shm-size=256m --gpus all -v $PWD/models:/tts/models thorsten-tts-training
 ```
 
+## Continue training after break / restore from checkpoints
+
+When you have stopped training sometime (note: you can stop the container anytime via `docker stop $(docker container ls | grep 'thorsten-tts-training' | cut -f1 -d\t)`) you can easily resume/restore from the last checkpoint or best model trained so far (note: Mozilla TTS chooses the model with the most steps, automatically):
+
+```
+docker run --rm --shm-size=256m --gpus all -v $PWD/models:/tts/models thorsten-tts-training --continue_path /tts/models/<here specific path to model file within models subfolder (see Note)>
+```
+
 **Note:** Finished models/checkpoints are stored in subfolder `models` after the training!
 

@@ -6,26 +6,33 @@
 # Installation folder BASEDIR **inside** Docker container (usually, do not change!)
 
 # IMPORTANT NOTE: if it is changed to another folder, you have to manually change it...
-#   1. ... to the same folder in the last line of this Dockerfile, see ENTRYPOINT
+#   1. ... to the same folder in the last line of this Dockerfile, see CMD
 #   2. ... and in external file model_config.json: all occurrences of the former path have to be changed to the new folder, as well
 ARG BASEDIR=/tts
 
-FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-devel as ttts-base
+FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-devel as ttts_base
 ARG BASEDIR
 WORKDIR $BASEDIR
 
 # Install system libraries etc.
-FROM ttts-base as ttts1
+FROM ttts_base as ttts1
+#COPY --from=ttts_base / /
 ARG BASEDIR
 WORKDIR $BASEDIR
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends build-essential gcc espeak-ng espeak-ng-data git git-extras
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		build-essential \
+		gcc \
+		espeak-ng \
+		espeak-ng-data \
+		git \
+		git-extras
 RUN pip install pip --upgrade
 RUN pip install gdown soundfile
 
 # Download and extract "thorsten-TTS" dataset
 FROM ttts1 as ttts2
+#COPY --from=ttts1 / /
 ARG BASEDIR
 WORKDIR $BASEDIR
 
@@ -40,6 +47,7 @@ RUN tail -n 2268 thorsten-de/metadata_shuf.csv > thorsten-de/metadata_val.csv
 
 # Install Mozilla TTS repo and dependencies
 FROM ttts2 as ttts3
+#COPY --from=ttts2 / /
 ARG BASEDIR
 WORKDIR $BASEDIR
 
@@ -57,6 +65,7 @@ RUN python setup.py develop
 
 # Add german phoneme cleaner library by @repodiac
 FROM ttts3 as ttts4
+#COPY --from=ttts3 / /
 ARG BASEDIR
 
 WORKDIR $BASEDIR
@@ -72,6 +81,10 @@ RUN echo "\treturn GermanTransliterate(transliterate_ops={'accent_peculiarity', 
 WORKDIR $BASEDIR
 COPY model_config.json test_sentences.txt* $BASEDIR/
 COPY vocoder_config.json $BASEDIR/
+
+FROM ttts4 as ttts5
+#COPY --from=ttts4 / /
+ARG BASEDIR
 
 # Compute mean and variance of spectrogram features in advance
 WORKDIR $BASEDIR/TTS/mozilla_voice_tts/bin/
