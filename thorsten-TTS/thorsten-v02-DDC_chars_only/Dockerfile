@@ -70,8 +70,8 @@ RUN echo "\treturn GermanTransliterate(transliterate_ops={'accent_peculiarity', 
 
 # copy config files
 WORKDIR $BASEDIR
-COPY model_config.json $BASEDIR
-COPY vocoder_config.json $BASEDIR
+COPY model_config.json test_sentences.txt* $BASEDIR/
+COPY vocoder_config.json $BASEDIR/
 
 # Compute mean and variance of spectrogram features in advance
 WORKDIR $BASEDIR/TTS/mozilla_voice_tts/bin/
@@ -80,5 +80,6 @@ RUN python compute_statistics.py --config_path /tts/model_config.json --out_path
 # Run tacotron2 training and train vocoder PWGAN afterwards
 # change the GPU id if needed
 WORKDIR $BASEDIR/TTS/mozilla_voice_tts/bin/
-#ENTRYPOINT CUDA_VISIBLE_DEVICES="0" python train_tts.py --config_path /tts/model_config.json
-ENTRYPOINT CUDA_VISIBLE_DEVICES="0" python train_tts.py --config_path /tts/model_config.json; CUDA_VISIBLE_DEVICES="0" python train_vocoder.py --config_path /tts/vocoder_config.json
+#ENTRYPOINT CUDA_VISIBLE_DEVICES="0" python train_tts.py --config_path /tts/model_config.json; CUDA_VISIBLE_DEVICES="0" python train_vocoder.py --config_path /tts/vocoder_config.json
+ENTRYPOINT ["python", "train_tts.py"]
+CMD ["--config_path", "/tts/model_config.json"]
